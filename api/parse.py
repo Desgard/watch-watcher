@@ -39,6 +39,7 @@ def parse_watch_info(info_str):
         "Price": price
     }
 
+
 if __name__ == "__main__":
     pass
 
