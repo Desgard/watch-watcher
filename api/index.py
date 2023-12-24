@@ -92,7 +92,7 @@ def handle_message(event):
         else:
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage(text=str(json.dumps(result), indent=2, ensure_ascii=False)))
+                TextSendMessage(text=str(json.dumps(result, indent=2, ensure_ascii=False))))
 
     except KeyError:
         line_bot_api.reply_message(
