@@ -7,13 +7,14 @@ import os
 
 line_bot_api = LineBotApi(os.getenv("LINE_CHANNEL_ACCESS_TOKEN"))
 line_handler = WebhookHandler(os.getenv("LINE_CHANNEL_SECRET"))
-working_status = os.getenv("DEFALUT_TALKING", default = "true").lower() == "true"
+working_status = os.getenv("DEFALUT_TALKING", default="true").lower() == "true"
 
 app = Flask(__name__)
 
 # domain root
 
 
+# domain root
 @app.route('/')
 def home():
     return 'Hello, World!'
@@ -41,6 +42,7 @@ def handle_message(event):
     if event.message.type != "text":
         return
 
+    working_status = True
     line_bot_api.reply_message(
         event.reply_token,
         TextSendMessage(text=event.message.text))
