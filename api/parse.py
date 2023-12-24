@@ -31,12 +31,12 @@ def parse_watch_info(info_str):
             price = price_num
 
     return {
-        "URL": url.group() if url else None,
-        "Watch ID": watch_id.group() if watch_id else None,
-        "Date": date_obj,
-        "Condition": condition.group() if condition else None,
-        "Additional Info": additional_info.group() if additional_info else None,
-        "Price": price
+        "url": url.group() if url else None,
+        "id": watch_id.group() if watch_id else None,
+        "date": date_obj,
+        "condition": condition.group() if condition else None,
+        "note": additional_info.group() if additional_info else None,
+        "price": price
     }
 
 
@@ -52,4 +52,4 @@ test = """https://www.chrono24.jp/patekphilippe/patek-philippe-nautilus-5712-whi
 
 納期3.4日
     """
-print(str(json.dumps(parse_watch_info(test), indent=2)))
+print(str(json.dumps(parse_watch_info(test))))
