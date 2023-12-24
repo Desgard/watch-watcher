@@ -14,6 +14,8 @@ line_handler = WebhookHandler(os.getenv("LINE_CHANNEL_SECRET"))
 app = Flask(__name__)
 
 # parse
+
+
 def parse_watch_info(info_str):
     # 正则表达式模式
     url_pattern = r'https?://[^\s]+'
@@ -82,14 +84,20 @@ def handle_message(event):
 
     result = parse_watch_info(event.message.text)
 
-    if result['URL'] is None:
+    try:
+        if result.get('url') is None:
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text="Can't parse watch info"))
+        else:
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text=str(json.dumps(result))))
+
+    except KeyError:
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text="Can't parse watch info"))
-    else:
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text=str(json.dumps(result))))
+            TextSendMessage(text="error"))
 
 
 if __name__ == "__main__":
