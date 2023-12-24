@@ -7,7 +7,6 @@ import os
 
 line_bot_api = LineBotApi(os.getenv("LINE_CHANNEL_ACCESS_TOKEN"))
 line_handler = WebhookHandler(os.getenv("LINE_CHANNEL_SECRET"))
-working_status = os.getenv("DEFALUT_TALKING", default="true").lower() == "true"
 
 app = Flask(__name__)
 
@@ -37,13 +36,11 @@ def callback():
 
 @line_handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    global working_status
 
     if event.message.type != "text":
         return
 
     app.logger.info("reply: " + event.message.text)
-    working_status = True
     line_bot_api.reply_message(
         event.reply_token,
         TextSendMessage(text=event.message.text))
