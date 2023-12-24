@@ -1,4 +1,5 @@
 import re
+import json
 from datetime import datetime
 
 
@@ -37,3 +38,17 @@ def parse_watch_info(info_str):
         "Additional Info": additional_info.group() if additional_info else None,
         "Price": price
     }
+
+if __name__ == "__main__":
+    pass
+
+test = """https://www.chrono24.jp/patekphilippe/patek-philippe-nautilus-5712-white-gold-leather-5712g-001-like-new-2019-full-set--id26625810.htm
+5712G-001
+2017年
+中古
+フルセット
+金額995万
+
+納期3.4日
+    """
+print(str(json.dumps(parse_watch_info(test), indent=2)))
