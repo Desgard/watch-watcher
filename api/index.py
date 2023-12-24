@@ -46,7 +46,7 @@ def parse_watch_info(info_str):
     return {
         "url": url.group() if url else None,
         "id": watch_id.group() if watch_id else None,
-        "date": date_obj,
+        "date": date_obj.isoformat() if date_obj else None,  # 将日期转换为字符串
         "condition": condition.group() if condition else None,
         "note": additional_info.group() if additional_info else None,
         "price": price
