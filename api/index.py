@@ -90,31 +90,27 @@ def handle_message(event):
                 event.reply_token,
                 TextSendMessage(text="Can't parse watch info"))
         else:
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text=str(json.dumps(result, indent=2, ensure_ascii=False))))
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text="录入成功"))
+            msg_res = ""
+            msg_res += str(json.dumps(result, indent=2, ensure_ascii=False))
+            msg_res += "\n[WatchWatcher] 录入成功"
 
-            if result.get('price') is None:
-                return
-            # 计算汇率价格
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text="实时汇率 100 JPY = 5.0019 CNY"))
-            price_in_jpy = result['price']  # 例如，watch_info 是之前解析的字典
-            # 实时汇率：100 JPY = 5.0019 CNY
-            exchange_rate = 5.0019 / 100
+            if result.get('price') is not None:
+                # 计算汇率价格
+                msg_res += "\n[WatchWatcher] 获取实时汇率 100 JPY = 5.0019 CNY"
+                price_in_jpy = result['price']  # 例如，watch_info 是之前解析的字典
+                # 实时汇率：100 JPY = 5.0019 CNY
+                exchange_rate = 5.0019 / 100
 
-            # 计算转换后的人民币价格
-            price_in_cny = price_in_jpy * exchange_rate
+                # 计算转换后的人民币价格
+                price_in_cny = price_in_jpy * exchange_rate
 
-            # 回复消息
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text=f"转化价格是 {price_in_cny:.2f} CNY")
-            )
+                # 回复消息
+                msg_res += f"\n[WatchWatcher] 转化价格是 {price_in_cny:.2f} CNY"
+
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(text=msg_res)
+                )
 
     except KeyError:
         line_bot_api.reply_message(
