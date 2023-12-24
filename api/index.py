@@ -3,6 +3,9 @@ from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage
 
+from parse import parse_watch_info
+
+import json
 import os
 
 line_bot_api = LineBotApi(os.getenv("LINE_CHANNEL_ACCESS_TOKEN"))
@@ -41,9 +44,12 @@ def handle_message(event):
         return
 
     app.logger.info("reply: " + event.message.text)
+
+    result = parse_watch_info(event.message.text)
+
     line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage(text=event.message.text))
+        TextSendMessage(text=json.dumps(result, indent=2)))
 
 
 if __name__ == "__main__":
